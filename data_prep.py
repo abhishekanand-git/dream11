@@ -3,9 +3,19 @@ import numpy as np
 
 class ScoreCard:
 
-    def __init__(self, matchdata):
+    def __init__(self, matchdata,colconfig):
         self.matchdata = matchdata
-        self.matchdata['over_num'] = self.matchdata['over'].apply(lambda x: int(x))
+        self.matchdata['over_num'] = self.matchdata[colconfig['OVER']].apply(lambda x: int(x))
+        self.matchid = colconfig['MATCHID']
+        self.batsmanname = colconfig['BATSMANNAME']
+        self.bowlername = colconfig['BOWLERNAME']
+        self.scorevalue = colconfig['SCOREVALUE']
+        self.over = colconfig['OVER']
+        self.innings = colconfig['INNINGS']
+        self.battingorder = colconfig['BATTINGORDER']
+        self.battingteam = colconfig['BATTINGTEAM']
+        self.bowlingteam = colconfig['BOWLINGTEAM']
+
         return
 
     def batsmen_summary_fun(self) -> None:
@@ -13,23 +23,23 @@ class ScoreCard:
         matchdata: pandas dataframe of ball by ball data for the matches
         return: batsmen_summary: pandas datarame with summary scorecard of a batsmen
         """
-        batsmen_score = pd.DataFrame(self.matchdata.groupby(['matchid', 'batsmanname'])['scorevalue'].sum()).\
-            rename(columns={"scorevalue": "total_runs"})
-        batsmen_ball_faced = pd.DataFrame(self.matchdata.groupby(['matchid', 'batsmanname'])['over'].count()).\
-            rename(columns={"over": "total_balls_faced"})
-        batsmen_ball_faced_legal = pd.DataFrame(self.matchdata.groupby(['matchid', 'batsmanname'])['over'].nunique()).\
-            rename(columns={"over": "total_legal_balls_faced"})
-        batsmen_scores6 = pd.DataFrame(self.matchdata[self.matchdata['scorevalue'] == 6].groupby(['matchid', 'batsmanname'])['scorevalue'].count()).\
-            rename(columns={"scorevalue": "run_6"})
-        batsmen_scores4 = pd.DataFrame(self.matchdata[self.matchdata['scorevalue'] == 4].groupby(['matchid', 'batsmanname'])['scorevalue'].count()).\
-            rename(columns={"scorevalue": "run_4"})
-        batsmen_position = pd.DataFrame(self.matchdata.groupby(['matchid', 'batsmanname'])['fallofwickets'].min())
+        batsmen_score = pd.DataFrame(self.matchdata.groupby([self.matchid, self.batsmanname])[self.scorevalue].sum()).\
+            rename(columns={self.scorevalue: "total_runs"})
+        batsmen_ball_faced = pd.DataFrame(self.matchdata.groupby([self.matchid, self.batsmanname])[self.over].count()).\
+            rename(columns={self.over: "total_balls_faced"})
+        batsmen_ball_faced_legal = pd.DataFrame(self.matchdata.groupby([self.matchid, self.batsmanname])[self.over].nunique()).\
+            rename(columns={self.over: "total_legal_balls_faced"})
+        batsmen_scores6 = pd.DataFrame(self.matchdata[self.matchdata[self.scorevalue] == 6].groupby([self.matchid, self.batsmanname])[self.scorevalue].count()).\
+            rename(columns={self.scorevalue: "run_6"})
+        batsmen_scores4 = pd.DataFrame(self.matchdata[self.matchdata[self.scorevalue] == 4].groupby([self.matchid, self.batsmanname])[self.scorevalue].count()).\
+            rename(columns={self.scorevalue: "run_4"})
+        batsmen_position = pd.DataFrame(self.matchdata.groupby([self.matchid, self.batsmanname])[self.battingorder].min())
         df_list = [batsmen_score, batsmen_ball_faced, batsmen_ball_faced_legal, batsmen_scores6, batsmen_scores4, batsmen_position]
         batsmen_summary = pd.concat(df_list, join='outer', axis=1).fillna(np.nan).reset_index()
-        batsmen_summary = pd.merge(batsmen_summary, self.matchdata[['matchid', 'batsmanname', 'innings', 'battingteam', 'bowlingteam']].
-                                   drop_duplicates(), on=['matchid', 'batsmanname'], how='left')
-        batsmen_summary.rename(columns={'innings': 'batsmen_innings', 'batsmanname': 'playername', 'battingteam': 'batsmen_battingteam',
-                                        'bowlingteam': 'batsmen_bowlingteam'}, inplace=True)
+        batsmen_summary = pd.merge(batsmen_summary, self.matchdata[[self.matchid, self.batsmanname, self.innings, self.batsmanname, self.bowlername]].
+                                   drop_duplicates(), on=[self.matchid, self.batsmanname], how='left')
+        batsmen_summary.rename(columns={self.innings: 'batsmen_innings', self.batsmanname: 'playername', self.battingteam: 'batsmen_battingteam',
+                                        self.bowlingteam: 'batsmen_bowlingteam'}, inplace=True)
         self.batsmen_summary = batsmen_summary
         return
 
@@ -39,7 +49,7 @@ class ScoreCard:
 
         return: bowler_summary: pandas datarame with summary scorecard of a bowler
         """
-        bowler_wickets = pd.DataFrame(self.matchdata[(self.matchdata['dismissal'] == 't') & (~self.matchdata['dismissedtype'].isin(['run out','retired hurt']))].
+        bowler_wickets = pd.DataFrame(self.matchdata[(self.matchdata['dismissal'] == 't') & (~self.matchdata['dismissedtype'].isin(['run out', 'retired hurt']))].
                                       groupby(['matchid', 'bowlername'])['dismissal'].count()).\
             rename(columns={"dismissal": "total_wickets"})
         bowler_overs_bow = pd.DataFrame(self.matchdata.groupby(['matchid', 'bowlername'])['over'].count()).\
@@ -73,8 +83,8 @@ class ScoreCard:
         self.bowler_summary_fun()
         ipl_points = pd.merge(self.batsmen_summary, self.bowler_summary, on=['matchid', 'playername'], how='outer')
         player_avg = self.get_player_role(ipl_points)
-        ipl_points = pd.merge(ipl_points, player_avg[['playername', 'playing_role']], on='playername', how='left')
-        return ipl_points
+        self.ipl_points = pd.merge(ipl_points, player_avg[['playername', 'playing_role']], on='playername', how='left')
+        return
 
     def get_player_role(self, input_df) -> pd.DataFrame:
         """"
@@ -94,9 +104,9 @@ class ScoreCard:
         return player_avg
 
 
-class Dream11Points:
+class Dream11Points(ScoreCard):
 
-    def __init__(self, player_scorecard,pointsconfig):
+    def __init__(self, player_scorecard, pointsconfig):
         self.player_scorecard = player_scorecard
         self.pointsconfig = pointsconfig
         return
@@ -145,4 +155,4 @@ class Dream11Points:
         self.get_batting_points()
         self.get_bowling_points()
         self.player_scorecard['total_points'] = self.player_scorecard['total_bat_points'].add(self.player_scorecard['total_bowl_points'], fill_value=0)
-        return self.player_scorecard
+        return

@@ -39,15 +39,26 @@ rewardconfig = {
                 }
 
 # getting the scorecard from a batsmen's perspective
-ipl_scorecard = ScoreCard(matchdata.copy())
-ipl_scorecard_summary = ipl_scorecard.merge_player_scorecard()
+colconfig = {'MATCHID': 'matchid',
+             'BATSMANNAME': 'batsmanname',
+             'BOWLERNAME': 'bowlername',
+             'SCOREVALUE': 'scorevalue',
+             'OVER': 'over',
+             'INNINGS': 'innings',
+             'BATTINGORDER': 'fallofwickets',
+             'BATTINGTEAM': 'battingteam',
+             'BOWLINGTEAM': 'bowlingteam'}
+
+ipl_scorecard = ScoreCard(matchdata.copy(), colconfig)
+ipl_scorecard.merge_player_scorecard()
 
 # merging both the batsmen and bowler's points to get a single view
-ipl_scorecard_points = Dream11Points(ipl_scorecard_summary, pointsconfig).get_batsmen_bowler_points()
+player_points = Dream11Points(ipl_scorecard.ipl_points.copy(), pointsconfig)
+player_points.get_batsmen_bowler_points()
 
 # Defining the metric to select the players
 ROLLINGWINDOW = 10
-ipl_scorecard_points_avg = get_points_moving_avg(ipl_scorecard_points.copy(), rolling_avg_window=ROLLINGWINDOW)
+ipl_scorecard_points_avg = get_points_moving_avg(player_points.player_scorecard.copy(), rolling_avg_window=ROLLINGWINDOW)
 
 # writing the scorecard to save it
 ipl_scorecard_points_avg.to_csv(r'ipl_scorecard_points_avg.csv', index=False)
@@ -65,6 +76,4 @@ rewards_df = get_estimated_rewards(accuracy_df, rewardconfig, fixed_multipler=50
 print(rewards_df['rewards_earned'].sum())
 rewards_df.to_csv(r'rewards_df.csv', index=False)
 
-# TODO Add dream11 playing role constraint to the select11 function
-# TODO Enable captain and vice captain role in point calculation
-
+# TODO Add the linear solver
