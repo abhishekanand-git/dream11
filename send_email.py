@@ -45,7 +45,7 @@ def send_email_team(team1, team2, filepath):
     #html = html.format(table=tabulate(data, headers="firstrow", tablefmt="html"), team1=team1, team2=team2)
     html = html.format(table=tablehtml, team1=team1, team2=team2)
     message = MIMEMultipart(
-        "alternative", None, [ MIMEText(html, 'html')])
+        "alternative", None, [MIMEText(html, 'html')])
     #MIMEText(text),
     todays_date = date.today().strftime("%b-%d-%Y")
     message["Subject"] = f"Dream11 Team of the Day: {todays_date}"

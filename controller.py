@@ -47,7 +47,8 @@ if __name__ == "__main__":
                    'MINBOWLER': 3,
                    'MAXBOWLER': 6,
                    'MINALLROUNDER': 1,
-                   'MAXALLROUNDER': 4}
+                   'MAXALLROUNDER': 4,
+                   'MAXTEAMCOUNT': 7}
 
     colconfig = {'MATCHID': 'matchid',
                  'BATSMANNAME': 'batsmanname',
@@ -70,7 +71,8 @@ if __name__ == "__main__":
                  'PREDSELECTION': 'pred_selection_true',
                  'ACTUALSELECTION': 'actual_selection_true',
                  'PREDSELECTIONRANK': 'pred_selection_rank',
-                 'ACTUALSELECTIONRANK': 'actual_selection_rank'}
+                 'ACTUALSELECTIONRANK': 'actual_selection_rank',
+                 'PLAYERTEAM': 'playing_team'}
 
     predictors = ['playing_team', 'opposition_team', 'playing_role', 'city', 'home_game', 'toss_flag','player_match_count',
                   'fallofwickets_playername_avg2', 'total_balls_bowled_playername_avg2',
@@ -157,10 +159,10 @@ if __name__ == "__main__":
         execute_rewards_calcualtion(datapath, constconfig, colconfig, rewardconfig)  # Run the function to estimate rewards if actual playing 11 is available
 
     # Enter the details of the current match/
-    TEAM1 = "Delhi Capitals"
-    TEAM2 = "Kings XI Punjab"
+    TEAM1 = "Chennai Super Kings"
+    TEAM2 = "Rajasthan Royals"
     CITY = 'neutral venue'
-    VENUE = 'Dubai International Cricket Stadium'
+    VENUE = 'Sharjah Cricket Stadium'
     # Run the below function to predict the best 11 for the upcoming match
 
     if SELECT_PLAYING_SQUAD:

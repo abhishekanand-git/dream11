@@ -1,26 +1,40 @@
 playername,teamname,playingrole,playercost,model1_points,model1_team,model2_points,model2_team
-KL Rahul,Kings XI Punjab,Batsmen,10.5,93,1,163,1
-CH Gayle,Kings XI Punjab,Batsmen,9.5,58,1,77,1
-KMA Paul,Delhi Capitals,AllRounder,8,36,1,34,1
-S Dhawan,Delhi Capitals,Batsmen,10,35,1,38,1
-K Rabada,Delhi Capitals,Bowler,9,34,1,33,1
-MP Stoinis,Delhi Capitals,AllRounder,8.5,33,1,33,1
-JDS Neesham,Kings XI Punjab,AllRounder,8.5,32,1,30,
-N Pooran,Kings XI Punjab,Batsmen,9,32,1,26,
-SS Iyer,Delhi Capitals,Batsmen,9,32,1,29,
-I Sharma,Delhi Capitals,Bowler,8.5,29,1,34,1
-Mohammed Shami,Kings XI Punjab,Bowler,8.5,29,1,29,1
-RR Pant,Delhi Capitals,Batsmen,9.5,31,,31,1
-MA Agarwal,Kings XI Punjab,Batsmen,8.5,31,,27,
-PP Shaw,Delhi Capitals,Batsmen,8.5,31,,31,1
-AR Patel,Delhi Capitals,AllRounder,8.5,31,,32,1
-GJ Maxwell,Kings XI Punjab,AllRounder,9,29,,29,
-K Gowtham,Kings XI Punjab,AllRounder,8.5,28,,25,
-Mujeeb-ur-Rahman,Delhi Capitals,Bowler,9,28,,26,
-R Ashwin,Delhi Capitals,Bowler,10,28,,30,
-A Mishra,Delhi Capitals,Bowler,8.5,27,,27,
-Arshdeep Singh,Kings XI Punjab,Bowler,7.5,26,,25,
-MM Sharma,Delhi Capitals,Bowler,8,26,,18,
-Harpreet Brar,Kings XI Punjab,Bowler,8,25,,,
-M Ashwin,Kings XI Punjab,Bowler,8,24,,21,
-Mandeep Singh,Kings XI Punjab,Batsmen,8,23,,19,
+M Vijay,Chennai Super Kings,Batsmen,8.5,74,1,14,
+F du Plessis,Chennai Super Kings,Batsmen,9,55,1,-2,
+RA Jadeja,Chennai Super Kings,AllRounder,8.5,36,1,292,1
+SM Curran,Chennai Super Kings,AllRounder,8.5,35,1,28,
+MJ Santner,Chennai Super Kings,AllRounder,8.5,35,1,28,
+S Gopal,Rajasthan Royals,Bowler,8.5,33,1,29,1
+M Vohra,Rajasthan Royals,Batsmen,8,32,1,29,1
+L Ngidi,Chennai Super Kings,Bowler,8.5,32,1,24,
+R Tewatia,Rajasthan Royals,AllRounder,8,30,1,27,
+AS Rajpoot,Rajasthan Royals,Bowler,8,29,1,26,
+KV Sharma,Chennai Super Kings,Bowler,8,29,1,26,
+O Thomas,Rajasthan Royals,Bowler,8,26,1,24,
+SR Watson,Chennai Super Kings,AllRounder,9.5,37,,31,1
+R Parag,Rajasthan Royals,AllRounder,10,37,,28,
+SV Samson,Rajasthan Royals,Batsmen,9.5,35,,29,
+SK Raina,Chennai Super Kings,Batsmen,10,34,,31,1
+SPD Smith,Rajasthan Royals,Batsmen,9.5,34,,25,
+DJ Bravo,Chennai Super Kings,AllRounder,10,33,,32,1
+RV Uthappa,Rajasthan Royals,Batsmen,9,32,,29,1
+Imran Tahir,Chennai Super Kings,Bowler,9.5,32,,31,
+DA Miller,Rajasthan Royals,Batsmen,8.5,31,,24,
+MK Lomror,Rajasthan Royals,AllRounder,10,30,,28,
+DL Chahar,Chennai Super Kings,Bowler,8.5,30,,32,1
+JC Archer,Rajasthan Royals,Bowler,9,30,,30,1
+MS Dhoni,Chennai Super Kings,Batsmen,9.5,30,,28,
+IS Sodhi,Rajasthan Royals,Bowler,10,29,,22,
+Harbhajan Singh,Chennai Super Kings,Bowler,10,29,,53,1
+AJ Tye,Rajasthan Royals,Bowler,8.5,29,,24,
+AT Rayudu,Chennai Super Kings,Batsmen,9,28,,25,
+PP Chawla,Chennai Super Kings,Bowler,8.5,28,,31,1
+JD Unadkat,Rajasthan Royals,Bowler,8.5,26,,27,
+SN Thakur,Chennai Super Kings,Bowler,8.5,26,,29,
+LS Livingstone,Rajasthan Royals,Batsmen,10,26,,26,
+KM Jadhav,Chennai Super Kings,Batsmen,8.5,25,,24,
+STR Binny,Rajasthan Royals,AllRounder,10,25,,22,
+VR Aaron,Rajasthan Royals,Bowler,8,24,,25,
+TK Curran,Rajasthan Royals,Bowler,8.5,24,,25,
+K Gowtham,Rajasthan Royals,Bowler,10,23,,19,
+M Markande,Rajasthan Royals,Bowler,8,21,,18,

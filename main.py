@@ -19,7 +19,7 @@ def execute_get_scorecard(datapath,pointsconfig):
     # calculating the points scored by the players based on dream11 scoring method
     ipl_scorecard_points = Dream11Points(ipl_scorecard.ipl_merged_scorecard, pointsconfig)
     ipl_scorecard_points.get_batsmen_bowler_points()
-    ipl_scorecard_points.player_scorecard.to_csv(datapath['matchdatascorecardpath'])
+    ipl_scorecard_points.player_scorecard.to_csv(datapath['matchdatascorecardpath'],index = False)
     return
 
 ##################Part to create additional features for modeling###################################################
