@@ -2,8 +2,12 @@ import pandas as pd
 from main import *
 from send_email import send_email_team
 from point_prediction import EnsembleModel
+import os
+cwd = os.getcwd()
 
 if __name__ == "__main__":
+    # Season Year
+    YEAR = 2021
     # reading the source file from local
     matchdatapath = r'Data/matchdata.csv'
     matchsummarypath = r'Data/matchsummary.csv'
@@ -145,16 +149,20 @@ if __name__ == "__main__":
     # Change this to True if the current playing XI is available
     SELECT_FROM_PLAYING_XI = True
     # Change this to true to send email if the file fo next match is present at nextmatchteampath
-    SEND_EMAIL = True
+    SEND_EMAIL = False
     sender_email = "abhishek.anand374@gmail.com"
     # add more emails to this by using "," seperator
     receiver_email = "madhavgoswami93@gmail.com," + "sainiabhi7734@gmail.com," + "rapidnehal@gmail.com," + "sandeepch@zeta.tech," + "mandalravi04@gmail.com," + "vikashkumar72741234@gmail.com"
     # config dor send_email
     modelnamelist = ['xgb', 'catboost', 'rf', 'movingaverage']
-    #modelnamelist = ['catboost']
+    # modelnamelist = ['catboost']
     # Run the below function to train the model
+    # run this to update the master
+    print("updating the masterdata")
+    update_master_data(datapath, pointsconfig,YEAR)
+
     if TRAIN_MODEL:
-        execute_get_scorecard(datapath, pointsconfig)  # Run the function to to get points in the scorecard format
+        execute_get_scorecard(datapath["matchdatapath"], datapath['matchdatascorecardpath'], pointsconfig)  # Run the function to to get points in the scorecard format
         execute_featureengg(datapath['matchdatascorecardpath'], datapath['matchsummarypath'], datapath['featenggpath'], colconfig)  # Run the function to create features
         execute_model_train(datapath, modelname, predictors, cat_cols, target_col, usetimeseries=False)  # Run the function to build the model
 
@@ -183,23 +191,28 @@ if __name__ == "__main__":
         finalmodelpred.to_csv(datapath['modelresultspath'], index=False)
         execute_team_selection(datapath, constconfig, colconfig)  # Run the function to only select the predicted playing 11
         execute_rewards_calcualtion(datapath, constconfig, colconfig, rewardconfig)  # Run the function to estimate rewards if actual playing 11 is available
-
-    # Enter the details of the current match/
-    TEAM1, TEAM2, VENUE = get_team_details(datapath, index=0)
-    print("Team1",TEAM1,"Team2", TEAM2,"Venue", VENUE)
-    # TEAM1 = "Mumbai Indians"
-    # TEAM2 = "Royal Challengers Bangalore"
-    CITY = 'neutral venue'
-    # VENUE = 'Dubai International Cricket Stadium'
+    # Attempts to automatically select the playing team details based on the most recent match lined up.
     # Run the below function to predict the best 11 for the upcoming match
 
     if SELECT_PLAYING_SQUAD:
         # run this to update the master
-        print("updating the masterdata")
-        update_master_data(datapath, pointsconfig)
-        # Change the values of team1, team2, city and venue depending on the match
+        # Change the values of team1, team2, city and venue depending on the match.
+        # Enter the details of the current match/
+        TEAM1 = "Mumbai Indians"
+        TEAM2 = "Royal Challengers Bangalore"
+        VENUE = 'Dubai International Cricket Stadium'
         print("creating pred features dataframe")
+        # Change the values of team1, team2, city and venue depending on the match.
+        # Enter the details of the current match/
+        TEAM1 = "Mumbai Indians"
+        TEAM2 = "Royal Challengers Bangalore"
+        VENUE = 'Dubai International Cricket Stadium'
+        CITY = 'neutral venue'
+        # This overwrites the variables declared above. 
+        TEAM1, TEAM2, VENUE = get_team_details(datapath, index=0)
+        print("Team1",TEAM1,"Team2", TEAM2,"Venue", VENUE)
         create_pred_dataframe_before_playing_XI(datapath, colconfig, TEAM1, TEAM2, CITY, VENUE, toss_winner=TEAM1)
+
     if SELECT_CURRENT_TEAM:
         if SELECT_FROM_PLAYING_XI:
             create_pred_dataframe_after_playing_XI(datapath)
@@ -227,7 +240,7 @@ if __name__ == "__main__":
             else:
                 finalteam = pd.merge(finalteam, teamtemp, on=['matchid','playername', 'playing_role', 'playing_team','playercost'], how='left')
 
-        finalteam.to_csv(r'C:\Users\40100147\PycharmProjects\dream11\Data\pred_team11_details.csv',index =False)
+        finalteam.to_csv(cwd + r'\pred_team11_details.csv',index =False)
         finalteam = formatdata(finalteam)
         finalteam.to_csv(nextmatchteampath, index=False)
     if SEND_EMAIL:

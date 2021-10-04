@@ -115,12 +115,13 @@ def get_data_for_event(tournamentid, eventid, directory, headers, ipl):
     return matchdata
 
 
-def update_ipl20_master():
+def update_ipl20_master(year):
     directory = os.getcwd() +"/ipl20"
-    tournamentid = 8048
+    tournamentid = "8048"
+    year= str(year)
     #directory = '~/Documents/GitHub/dream11/ipl20'
 
-    ipl20_schedule_url = "https://hsapi.espncricinfo.com/v1/pages/series/schedule?lang=en&leagueId=8048&year=2020"
+    ipl20_schedule_url = "https://hsapi.espncricinfo.com/v1/pages/series/schedule?lang=en&leagueId="+tournamentid+"&year="+year
     headers = {
 	    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36',
 	    "Upgrade-Insecure-Requests": "1", "DNT": "1",
@@ -130,12 +131,11 @@ def update_ipl20_master():
     response = requests.get(ipl20_schedule_url, headers=headers)
     data = json.loads(response.text)
     match_summary_ipl20 = pd.DataFrame(columns=['matchid', 'date', 'year', 'city', 'venue','team1', 'team2', 'result', 'tossdecision', 'winner', 'by_what', 'by_how_many', 'mom'])
-
+    print("data",data)
     for match_details in data['content']['matchEvents']:
 	    dict = {}
 	    matchid = match_details['id']
 	    date = match_details['date']
-	    year = 2020
 	    city = match_details['venue']['name']
 	    venue = match_details['venue']['name']
 	    team1 = match_details['competitors'][0]['name']
@@ -202,7 +202,9 @@ def update_ipl20_master():
     print(eventids_to_be_backfilled)
 
     for iter, row in ipl20_matchdata[ipl20_matchdata['eventid'].isin(eventids_to_be_backfilled)].iterrows():
-        date = pd.to_datetime(match_summary_ipl20[match_summary_ipl20.matchid == row['eventid']].date).dt.date.tolist()[0]
+        print("row",row)
+        print("row['eventid']",row['eventid'])
+        date = pd.to_datetime(match_summary_ipl20[match_summary_ipl20.matchid == row['eventid']].date).dt.date
         matchid = row['eventid']
         innings = row['innings']
         target = row['target']

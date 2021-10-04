@@ -236,8 +236,8 @@ def formatdata(finaloutdf):
     finaloutdf['model2_points'] = finaloutdf['model2_points'].apply(lambda x: round(x, 0))
     return finaloutdf
 
-def update_master_data(datapath,pointsconfig):
-    matchdata_ipl20 = update_ipl20_master()
+def update_master_data(datapath,pointsconfig,year):
+    matchdata_ipl20 = update_ipl20_master(year)
     matchdata = pd.read_csv(datapath['matchdatapath'])
     if matchdata_ipl20.shape[0] != 0:
         matchlistipl20 = matchdata_ipl20['matchid'].unique()
@@ -288,7 +288,6 @@ def get_team_details(datapath,index =0):
     datetime_dubai = datetime.now(tz_dubai)
     matchsummary = pd.read_csv(datapath['matchsummarypathipl20'])
     matchid = matchsummary.iloc[next(x[0] for x in enumerate(pd.to_datetime(matchsummary['date']).tolist()) if x[1] > datetime_dubai), 0]
-
     today_match = matchsummary[matchsummary['matchid'] == matchid]
     print(today_match)
     team1 = today_match['team1'].iloc[index]
